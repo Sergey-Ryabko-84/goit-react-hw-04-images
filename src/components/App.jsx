@@ -23,6 +23,7 @@ export const App = () => {
     if (query.trim() === '') return;
 
     const fetchData = async () => {
+      setLoading(true);
       const response = await fetchImages(query, page);
       setImages(state => {
         if (state) {
@@ -32,16 +33,15 @@ export const App = () => {
         };
       });
       setTotalHits(response.totalHits);
+      setLoading(false);
     };
 
-    setLoading(true);
     try {
       fetchData();
     } catch {
       setError(true);
-    } finally {
-      setLoading(false);
     }
+    
   }, [query, page]);
 
   useEffect(() => {
