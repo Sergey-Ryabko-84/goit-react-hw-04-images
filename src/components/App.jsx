@@ -20,15 +20,18 @@ export const App = () => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (query === '') return;
+    if (query.trim() === '') return;
 
     const fetchData = async () => {
       const response = await fetchImages(query, page);
-      if (images) setImages(state => [...state, ...response.hits]);
-      else {
-        setImages(response.hits);
-        setTotalHits(response.totalHits);
-      }
+      setImages(state => {
+        if (state) {
+          return [...state, ...response.hits]
+        } else {
+          return response.hits
+        };
+      });
+      setTotalHits(response.totalHits);
     };
 
     setLoading(true);
@@ -39,9 +42,13 @@ export const App = () => {
     } finally {
       setLoading(false);
     }
-
-    if (page > 1 && largeImageURL === null) smoothlyScroll();
   }, [query, page]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (page > 1) smoothlyScroll();
+    }, 300)
+  }, [page]);
 
   const handleFormSubmit = query => {
     setQuery(query);
