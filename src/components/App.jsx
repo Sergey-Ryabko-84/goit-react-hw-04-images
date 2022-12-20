@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Button } from './Button/Button';
 import { GlobalStyle } from './GlobalStyle';
@@ -44,7 +44,7 @@ export const App = () => {
     
   }, [query, page]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setTimeout(() => {
       if (page > 1) smoothlyScroll();
     }, 300)
